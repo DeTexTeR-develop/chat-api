@@ -1,6 +1,7 @@
 const express = require('express');
 const logger  = require('morgan');
 const cors    = require('cors');
+const mongo = require('../config/mongo');
 
 // routes
 
@@ -10,7 +11,7 @@ const chatRoomRouter = require("../routes/chatRoom.js");
 const deleteRouter = require("../routes/delete.js");
 
 //middleware
-const { decode } = require('./middlewares/jwt.js');
+const { decode } = require('../middleware/jwt');
 
 const app = express();
 
