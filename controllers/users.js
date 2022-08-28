@@ -8,7 +8,13 @@ const USER_TYPES = {
 };
 
 module.exports.getUsers = async(req, res) => {
-
+    try{
+        const users = await userModal.find();
+        return res.status(200).json({success: true, users});
+    }
+    catch(error){
+        res.status(500).json({success:false, error: error});
+    }
 };
 
 module.exports.createUsers = async(req, res) => {
@@ -30,6 +36,7 @@ module.exports.createUsers = async(req, res) => {
             lastName,
             type
         });
+        await user.save();
         res.status(200).json({success: true, user});
     }
     catch(err){
@@ -39,9 +46,27 @@ module.exports.createUsers = async(req, res) => {
 };
 
 module.exports.getUser = async(req, res) => {
-
+    try{
+        const {id} = req.params;
+        const user = await userModal.findById(id);
+        console.log(user);
+        if(!user){
+            return res.status(400).res.json('User not found');
+        }
+        return res.status(200).json({success:true, user});
+    }
+    catch(error){
+        return res.status(500).json({success: false, error:error});
+    }
 };
 
 module.exports.deleteUser = async(req, res) => {
-
+    try{
+        const {id} = req.params;
+        await userModal.findByIdAndDelete(id);
+        res.status(200).json({success: true, message: 'deleted user'});
+    }
+    catch(error){
+        res.status(500).json({success: false, error: error});
+    }
 };
